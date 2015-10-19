@@ -141,3 +141,21 @@ Now we have to fill in the gaps.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+Adding a new variable
+
+```r
+ activity_data$day<-ifelse(substr(weekdays(activity_data$datetime),1,1)=="S","weekend","weekday")
+```
+Aggregating data and building the plot
+
+```r
+average_by_weekday<-summarise(group_by(activity_data,interval,day),steps=mean(steps,na.rm=TRUE))
+average_weekday<-filter(average_by_weekday,day=="weekday")
+average_weekend<-filter(average_by_weekday,day=="weekend")
+par(mfrow = c(2, 1))
+par(mar = c(4, 4, 0, 0))
+plot(average_weekday$interval,average_weekday$steps,type="l",xlab="",ylab="steps")
+plot(average_weekend$interval,average_weekend$steps,type="l",xlab="",ylab="steps")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
